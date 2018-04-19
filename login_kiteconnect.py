@@ -17,6 +17,9 @@ from kiteconnect import KiteTicker
 
 driver = webdriver.Firefox()
 
+timout = 5
+
+
 '''your login url'''
 driver.get("https://kite.trade/connect/login?api_key=xxxxyyyyzzzzzzz1234")
  
@@ -41,22 +44,35 @@ driver.find_element_by_tag_name('button').click()
 
 driver.implicitly_wait(10)
 
+try:
+    element_present = EC.presence_of_element_located((By.XPATH, "//input[@type='password']"))
+    WebDriverWait(driver, timeout).until(element_present)
+except TimeoutException:
+    print "Timed out waiting for finding password type to load"
+
 
 
 ''' Implementing new way of answering security questions'''
 all_inputs=driver.find_elements_by_xpath("//input[@type='password']")
 for inputs in all_inputs:
-  string= inputs.get_attribute("label")
-  inputs.send_keys(dictionary.get(string))
- 
+  string= dictionary.get(inputs.get_attribute("label"))
+  driver.implicitly_wait(2)
+  inputs.send_keys(string)
 
 driver.find_element_by_tag_name('button').click()
 
 
+try:
+    element_present = EC.presence_of_element_located((By.CLASS_NAME, "navbar-links"))
+    WebDriverWait(driver, timeout).until(element_present)
+except TimeoutException:
+    print "Timed out waiting for page to load"
+    
+    
 url=driver.current_url
 parse_url = urlparse(url)
 query = parse_qs(parse_url.query)
-request_token=query['request_token']
+request_token=query.get('request_token')
 
 api_key="Your api_key"
 api_secret="Your api_secret"

@@ -31,13 +31,17 @@ dictionary={
         'What is your birth place?':'xxyyzz'      
         }
 
+# write your User Id
+loginid = "AB1234"
+# write your Password
+password = "abc@123"
+# write your PIN
+loginpin = "123456"
 
-username = driver.find_element_by_xpath("//input[@placeholder='User ID']")
-password = driver.find_element_by_xpath("//input[@placeholder='Password']")
+username = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,"userid"))).send_keys(loginid)
+password = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,"password"))).send_keys(password)
 
 
-username.send_keys("Your User ID")
-password.send_keys("Your password")
 
 
 driver.find_element_by_tag_name('button').click()

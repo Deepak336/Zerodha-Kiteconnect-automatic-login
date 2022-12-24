@@ -18,10 +18,13 @@ from kiteconnect import KiteTicker
 driver = webdriver.Firefox()
 
 timout = 5
-
+api_key="Your api_key"
+api_secret="Your api_secret"
+user_id = ""
+password = ""
 
 '''your login url'''
-driver.get("https://kite.trade/connect/login?api_key=xxxxyyyyzzzzzzz1234")
+driver.get("https://kite.trade/connect/login?api_key={}".format(api_key))
  
 dictionary={
         'Which brand of TV do you own? ( e.g. LG Sony, etc)': 'xxyyzz',
@@ -36,8 +39,8 @@ username = driver.find_element_by_xpath("//input[@placeholder='User ID']")
 password = driver.find_element_by_xpath("//input[@placeholder='Password']")
 
 
-username.send_keys("Your User ID")
-password.send_keys("Your password")
+username.send_keys(user_id)
+password.send_keys(password)
 
 
 driver.find_element_by_tag_name('button').click()
@@ -74,10 +77,7 @@ parse_url = urlparse(url)
 query = parse_qs(parse_url.query)
 request_token=query.get('request_token')
 
-api_key="Your api_key"
-api_secret="Your api_secret"
+
 kite=KiteConnect(api_key=api_key)
-
 data = kite.generate_session(request_token[0], api_secret)
-
-kws = KiteTicker("Your api_key" ,data["access_token"], "Your user_id")
+kws = KiteTicker(api_key ,data["access_token"], user_id)
